@@ -16,24 +16,15 @@ async function doCopy(action) {
   });
 }
 
-async function showSuccessBadge() {
-  return sendMessageToBackgroundPage({
-    topic: 'badge',
-    params: {
-      action: 'flashSuccess',
-    },
-  });
-}
-
-function handler(event) {
-  doCopy(event.currentTarget.dataset.action);
-  showSuccessBadge();
-  window.close();
-}
-
 // Install listeners
 document.querySelectorAll('[data-action]').forEach((element) => {
-  element.addEventListener('click', handler);
+  element.addEventListener('click', async (event) => {
+    const { action } = event.currentTarget.dataset;
+
+    await doCopy(action);
+
+    window.close();
+  });
 });
 
 document.body.classList.add('custom-popup-style');

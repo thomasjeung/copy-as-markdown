@@ -11,7 +11,10 @@ const tabsToResult = {
  * @param {chrome.tabs.QueryInfo} query
  */
 function queryTabs(query) {
-  return new Promise((resolve) => chrome.tabs.query(query, resolve));
+  // optimistic -- user should have already granted 'tabs' permission on installation.
+  return new Promise((resolve) => {
+    chrome.tabs.query(query, resolve);
+  });
 }
 
 export async function currentTab(options = {}) {
